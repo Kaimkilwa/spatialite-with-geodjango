@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <div class="map-container column-map right-pos-map"  id="map-main"  ">
+
+                    {% load leaflet_tags%}
+                    {% load geojson_tags%}
+                    <!-- Map -->
+                    {% block extra_assets %}
+                    {% leaflet_js %}
+                    {% leaflet_css %}
+
+                    {% endblock%}
+                     {% for data in world %}
+                         <h1> {{ data.name }}</h1>
+                     {% endfor %}
+                    <div  id="map-main">
+                        <script type="text/javascript">
+                            var collection = {{world|geojsonfeature|safe }};
+                            function map_init(map, options) {
+                                L.geoJson(collection).addTo(map);
+                            }
+                        </script>
+
+                        {% leaflet_map "gis" callback="window.map_init" %}
+                    </div>
+
+
+</body>
+</html>
